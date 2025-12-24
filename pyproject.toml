@@ -1,15 +1,52 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
 [project]
-name = "oracle-mcp"
-version = "0.1.0"
-description = "Default template for PDM package"
+name = "tuvi-mcp"
+version = "1.0.0"
+description = "MCP Server for Vietnamese Fortune Telling based on Lunar Calendar"
 authors = [
     {name = "Mao Bui", email = "maonguyen199873@gmail.com"},
 ]
+maintainers = [
+    {name = "Mao Bui", email = "maonguyen199873@gmail.com"},
+]
 dependencies = ["fastmcp>=2.14.1", "lunardate>=0.2.2", "lunar-python>=1.4.8"]
-requires-python = "==3.12.*"
+requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
+keywords = ["mcp", "fortune-telling", "vietnamese", "lunar-calendar", "tu-vi", "can-chi", "ngu-hanh"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
 
+[project.urls]
+Homepage = "https://github.com/MaoBui2907/tuvi-mcp"
+Repository = "https://github.com/MaoBui2907/tuvi-mcp"
+Issues = "https://github.com/MaoBui2907/tuvi-mcp/issues"
+Changelog = "https://github.com/MaoBui2907/tuvi-mcp/blob/main/README.md"
+
+[project.scripts]
+tuvi_mcp = "tuvi_mcp.server:main"
 
 [tool.pdm]
-distribution = false
+distribution = true
+
+[tool.pdm.scripts]
+dev = "python -c \"import sys; import os; sys.path.insert(0, os.path.join(os.getcwd(), 'src')); import tuvi_mcp.server; tuvi_mcp.server.main()\""
+build = "pdm build"
+install-dev = "pdm install --dev"
+
+[dependency-groups]
+dev = [
+    "twine>=6.2.0",
+]

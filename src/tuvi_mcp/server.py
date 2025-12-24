@@ -1,7 +1,7 @@
 from fastmcp import FastMCP
 from datetime import datetime
-from libs.lunar_date import get_lunar_date
-from libs.can_chi import (
+from tuvi_mcp.libs.lunar_date import get_lunar_date
+from tuvi_mcp.libs.can_chi import (
     get_can_nam,
     get_can_ngay,
     get_chi_nam,
@@ -19,8 +19,8 @@ from libs.can_chi import (
     get_nap_am_day,
     get_gua,
 )
-from libs.xung_khac import get_xung_khac
-from libs.khuyen import (
+from tuvi_mcp.libs.xung_khac import get_xung_khac
+from tuvi_mcp.libs.khuyen import (
     PENGZU_CAN,
     PENGZU_CHI,
     NHI_THAP_BAT_TU_KHUYEN,
@@ -29,8 +29,10 @@ from libs.khuyen import (
     LUC_DIEU_KHUYEN,
     CUNG_PHI,
 )
+import argparse
+import sys
 
-mcp = FastMCP("Oracle MCP")
+mcp = FastMCP("TuVi MCP")
 
 
 @mcp.tool()
@@ -170,5 +172,67 @@ def get_general_fortune(
         return "Invalid format"
 
 
+def main():
+    """Entry point for the MCP server"""
+    parser = argparse.ArgumentParser(
+        description='VNStock MCP Server - Vietnam Stock Market Data Access via MCP',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+            Examples:
+            %(prog)s                              # Run with default stdio transport
+            %(prog)s --transport stdio            # Explicitly use stdio transport
+            %(prog)s --transport sse              # Use Server-Sent Events transport
+            %(prog)s --transport streamable-http  # Use HTTP streaming transport
+            
+            Transport Modes:
+            stdio          : Standard input/output (default, for MCP clients like Claude Desktop)
+            sse            : Server-Sent Events (for web applications)
+            streamable-http: HTTP streaming (for HTTP-based integrations)
+        """
+    )
+    
+    parser.add_argument(
+        '--transport', '-t',
+        choices=['stdio', 'sse', 'streamable-http'],
+        default='stdio',
+        help='Transport protocol to use (default: stdio)'
+    )
+
+    parser.add_argument(
+        '--host',
+        type=str,
+        default='0.0.0.0',
+        help='Host address to bind to (default: 0.0.0.0)'
+    )
+
+    parser.add_argument(
+        '--port',
+        type=int,
+        default=8000,
+        help='Port to bind to (default: 8000)'
+    )
+    try:
+        args = parser.parse_args()
+        
+        if args.transport == 'stdio':
+            mcp.run(transport=args.transport)
+        else:
+            # HTTP-based transports (sse, streamable-http)
+            print(f"Server running on http://{args.host}:{args.port}", file=sys.stderr)
+            mcp.run(
+                transport=args.transport,
+                host=args.host,
+                port=args.port,
+            )
+    except KeyboardInterrupt:
+        print("\nServer stopped by user.", file=sys.stderr)
+        sys.exit(0)
+    except Exception as e:
+        print(f"Error starting server: {e}", file=sys.stderr)
+        sys.exit(1)
+
 if __name__ == "__main__":
-    print(get_date_of_birth_detail("1998-07-19", 1, "text"))
+    # For testing, you can uncomment the line below
+    # print(get_date_of_birth_detail("1998-07-19", 1, "text"))
+    # For running the server, use:
+    main()

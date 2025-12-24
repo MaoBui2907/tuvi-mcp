@@ -1,6 +1,5 @@
-from lunar_python import Lunar
 from datetime import datetime
-from libs.can_chi import get_can_ngay, get_can_thang, get_can_nam, get_chi_ngay, get_chi_thang, get_chi_nam, get_hanh_nam, get_hanh_ngay
+from tuvi_mcp.libs.can_chi import get_can_ngay, get_can_nam, get_chi_ngay, get_chi_nam, get_hanh_nam, get_hanh_ngay
 
 # 1. QUAN HỆ NGŨ HÀNH (Sinh/Khắc)
 NGU_HANH_RELATION = {
