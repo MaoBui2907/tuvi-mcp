@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "tuvi-mcp"
-version = "1.0.0"
+version = "1.0.1"
 description = "MCP Server for Vietnamese Fortune Telling based on Lunar Calendar"
 authors = [
     {name = "Mao Bui", email = "maonguyen199873@gmail.com"},
@@ -36,7 +36,7 @@ Issues = "https://github.com/MaoBui2907/tuvi-mcp/issues"
 Changelog = "https://github.com/MaoBui2907/tuvi-mcp/blob/main/README.md"
 
 [project.scripts]
-tuvi_mcp = "tuvi_mcp.server:main"
+tuvi-mcp = "tuvi_mcp.server:main"
 
 [tool.pdm]
 distribution = true
