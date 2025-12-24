@@ -1,0 +1,15 @@
+[project]
+name = "oracle-mcp"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Mao Bui", email = "maonguyen199873@gmail.com"},
+]
+dependencies = ["fastmcp>=2.14.1", "lunardate>=0.2.2", "lunar-python>=1.4.8"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
